@@ -5,3 +5,4 @@ data/dmr/dmr.csv
 data/wikipeps.csv
 env/*
 *.pyc
+.venv/

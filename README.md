@@ -6,6 +6,10 @@ This repository contains a wide selection of public data from the RSA, as well a
 
 The data is partially extracted from public sources, and from semi-public data sources.
 
+- Cole, Megan (2026), "Operating mines of South Africa. Feb 2026 version.", Mendeley Data, V1, doi: 10.17632/8hf9sb73tw.1. Licensed CC BY-NC 3.0.
+
+- People's Assembly (pa.org.za), Popolo/Pombola data on MPs, parties, and committees.
+
 ### NPO Registry Scraper
 
 This is a scraper for the South African government's database of non-political organisations (NPOs). The code is extracted from the Siyazana project because it may be useful on its own.

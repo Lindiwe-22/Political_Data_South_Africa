@@ -55,12 +55,13 @@ with tab_mines:
     query = st.text_input("Search a mine or owner", key="mines_search")
     if query:
         results = list(db.query(
-            "SELECT * FROM sa_mines WHERE mine_name ILIKE :q OR mine_owner ILIKE :q ORDER BY mine_name LIMIT 25",
+                        "SELECT * FROM sa_mines WHERE mine_name ILIKE :q OR owner ILIKE :q ORDER BY mine_name LIMIT 25",
             q=f"%{query}%"
         ))
         st.write(f"{len(results)} result(s)")
         for mine in results:
             with st.expander(mine['mine_name']):
-                st.write(f"Owner: {mine.get('mine_owner')}")
-                st.write(f"Commodity: {mine.get('commodity')}")
-                st.write(f"District: {mine.get('magisterial_district_province')}")
+                st.write(f"Owner: {mine.get('owner')}")
+                st.write(f"Previous owner: {mine.get('previous_owner')}")
+                st.write(f"Mining method: {mine.get('mining_method')}")
+                st.write(f"Commodity: {mine.get('primary_commodity')}")
