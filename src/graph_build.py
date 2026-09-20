@@ -56,5 +56,5 @@ if __name__ == '__main__':
     for _, data in g.nodes(data=True):
         kinds[data['kind']] = kinds.get(data['kind'], 0) + 1
     print(f"By kind: {kinds}")
-    nx.write_graphml(g, '../data/madlanga_graph.graphml')
-    print("Saved to data/madlanga_graph.graphml")
+    nx.write_graphml(g, '../data/sa_political_mining_graph.graphml')
+    print("Saved to data/sa_political_mining_graph.graphml")
