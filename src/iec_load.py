@@ -1,11 +1,9 @@
 import os
+import glob
 import xlrd
 from common import database, DATA_PATH
 
-FILES = [
-    os.path.join(DATA_PATH, 'iec', '8_4_Published_Declarations_Report.xls'),
-    os.path.join(DATA_PATH, 'iec', '9_1_Published_Declarations_Report.xls'),
-]
+FILES = sorted(glob.glob(os.path.join(DATA_PATH, 'iec', '*.xls')))
 
 table = database['sa_iec_donations']
 
