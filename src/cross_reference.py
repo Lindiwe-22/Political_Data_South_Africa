@@ -92,4 +92,3 @@ if __name__ == '__main__':
     save_matches(matches)
     print("Saved to sa_cross_list_matches table")
 
-    
