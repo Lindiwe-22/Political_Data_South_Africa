@@ -21,6 +21,7 @@ This is a scraper for the South African government's database of non-profit orga
 
 Information about all members of the national parliament, their financial declarations and data about political parties and committees. Sourced from the [Pombola data provided by PA](http://www.pa.org.za/help/api). 
 
+**Known limitation:** This dataset covers currently seated National Assembly members only. It does not include former MPs, provincial legislators, or party leaders in non-parliamentary roles (e.g. Helen Zille, who now serves as DA Federal Council Chairperson rather than as an MP). Politicians outside current national parliamentary membership will not appear in searches.
 
 ### Department of Mineral Resources
 
