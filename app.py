@@ -2,7 +2,27 @@ import os
 
 import dataset
 import streamlit as st
+from sqlalchemy.exc import SQLAlchemyError as _SQLAlchemyError
 
+
+class SQLAlchemyError(_SQLAlchemyError):
+    """Concrete database error that preserves useful operation context."""
+
+    def __init__(self, message="A database operation failed", *, query=None):
+        super().__init__(message)
+        self.message = message
+        self.query = query
+
+    def __str__(self):
+        if self.query:
+            return f"{self.message} (query: {self.query})"
+        return self.message
+
+    def __repr__(self):
+        return (
+            f"{type(self).__name__}({self.message!r}, "
+            f"query={self.query!r})"
+        )
 
 DATABASE_URI = os.environ.get(
     "DATABASE_URI",
@@ -136,7 +156,9 @@ st.markdown(
 # People
 # ---------------------------------------------------------------------------
 
-tab_people, tab_mines, tab_donations = st.tabs(["👤 People", "⛏️ Mines", "💰 Political Funding"])
+tab_people, tab_mines, tab_donations, tab_profile = st.tabs(
+    ["👤 People", "⛏️ Mines", "💰 Political Funding", "👤 Politician Profile"]
+)
 
 
 with tab_people:
@@ -264,7 +286,7 @@ with tab_people:
                             else:
                                 st.markdown(f"- **{company}**")
 
-        except Exception as exc:
+        except (KeyError, _SQLAlchemyError, TypeError) as exc:
             st.error(
                 "The people search could not be completed."
             )
@@ -339,7 +361,7 @@ with tab_mines:
                         f"{mine.get('primary_commodity') or 'Not available'}"
                     )
 
-        except Exception as exc:
+        except _SQLAlchemyError as exc:
             st.error(
                 "The mine search could not be completed."
             )
@@ -357,8 +379,7 @@ with tab_donations:
         "</div>",
         unsafe_allow_html=True,
     )
-
-    query = st.text_input(
+    query: str = st.text_input(
         "Search a party or donor",
         key="donations_search",
         placeholder="e.g. party name or donor",
@@ -418,9 +439,115 @@ with tab_donations:
                     f"**Source report:** {row.get('source_file') or 'Not available'}"
                 )
 
-    except Exception as exc:
+    except _SQLAlchemyError as exc:
         st.error("The political funding search could not be completed.")
         st.caption(str(exc))
+
+
+# ---------------------------------------------------------------------------
+# Politician Profile
+# ---------------------------------------------------------------------------
+
+with tab_profile:
+    st.header("Politician Profile")
+    st.markdown(
+        '<div class="section-description">'
+        "A consolidated view of one person's memberships, business interests, "
+        "financial declarations, and any cross-list matches found."
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    query = st.text_input(
+        "Search a politician's name",
+        key="profile_search",
+        placeholder="e.g. Herman Mashaba",
+        label_visibility="collapsed",
+    )
+
+    if query:
+        try:
+            people = list(
+                db.query(
+                    "SELECT * FROM sa_pa_persons WHERE name ILIKE :q ORDER BY name LIMIT 10",
+                    q=f"%{query}%",
+                )
+            )
+
+            if not people:
+                st.info("No matching politician found.")
+
+            for person in people:
+                st.subheader(person.get("name") or "Unnamed")
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.markdown("**Memberships**")
+                    memberships = list(
+                        db.query(
+                            "SELECT * FROM sa_pa_memberships WHERE person_id = :pid",
+                            pid=person["popit_id"],
+                        )
+                    )
+                    if memberships:
+                        for m in memberships:
+                            role = m.get("role") or "member"
+                            org = m.get("organization_name") or "Unknown organization"
+                            st.markdown(f"- **{org}** — {role}")
+                    else:
+                        st.caption("None on record.")
+
+                    st.markdown("**Directorships / Business Interests**")
+                    directorships = list(
+                        db.query(
+                            "SELECT * FROM sa_pa_directorships WHERE person_id = :pid",
+                            pid=person["popit_id"],
+                        )
+                    )
+                    if directorships:
+                        for d in directorships:
+                            st.markdown(f"- {d.get('company_name') or 'Unknown company'}")
+                    else:
+                        st.caption("None on record.")
+
+                with col2:
+                    st.markdown("**Financial Interests**")
+                    financial = list(
+                        db.query(
+                            "SELECT * FROM sa_pa_financial WHERE person_id = :pid",
+                            pid=person["popit_id"],
+                        )
+                    )
+                    if financial:
+                        for f in financial:
+                            company = f.get("company_name") or "Unknown"
+                            nature = f.get("nature") or ""
+                            st.markdown(f"- **{company}**" + (f" — {nature}" if nature else ""))
+                    else:
+                        st.caption("None on record.")
+
+                    st.markdown("**Cross-List Matches**")
+                    name_tokens = set((person.get("name") or "").upper().split())
+                    all_matches = list(db.query("SELECT * FROM sa_cross_list_matches"))
+                    relevant = [
+                        m for m in all_matches
+                        if m.get("source_a") == "MP" and name_tokens & set((m.get("name_a") or "").upper().split())
+                    ]
+                    if relevant:
+                        for m in relevant:
+                            st.markdown(f"- Matches **{m['name_b']}** ({m['source_b']})")
+                    else:
+                        st.caption("No cross-list matches found.")
+
+                st.divider()
+
+        except _SQLAlchemyError as exc:
+            st.error("The profile lookup could not be completed.")
+            st.caption(str(exc))
+
+
+
 
 # ---------------------------------------------------------------------------
 # Footer
