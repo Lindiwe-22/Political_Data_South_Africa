@@ -377,6 +377,29 @@ with tab_mines:
                         f"{mine.get('primary_commodity') or 'Not available'}"
                     )
 
+                    violations = list(
+                        db.query(
+                            """
+                            SELECT * FROM sa_water_compliance
+                            WHERE :mn ILIKE '%' || name_of_mine || '%'
+                               OR name_of_mine ILIKE '%' || :mn || '%'
+                            ORDER BY reporting_year DESC
+                            """,
+                            mn=mine.get("mine_name") or "",
+                        )
+                    )
+                    if violations:
+                        st.markdown("**Water Compliance History**")
+                        for v in violations:
+                            rating = v.get("no_of_non_compliances_for_transgressions") or "Not available"
+                            st.markdown(
+                                f"- **{v.get('reporting_year')}:** {rating}"
+                            )
+                            if v.get("reason_finding_not_complying"):
+                                st.caption(v["reason_finding_not_complying"])
+
+
+
         except _SQLAlchemyError as exc:
             st.error(
                 "The mine search could not be completed."
