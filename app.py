@@ -489,7 +489,7 @@ with tab_profile:
                 col1, col2 = st.columns(2)
 
                 with col1:
-                    st.markdown("**Memberships**")
+                    st.subheader("Memberships")
                     memberships = list(
                         db.query(
                             "SELECT * FROM sa_pa_memberships WHERE person_id = :pid",
@@ -504,7 +504,7 @@ with tab_profile:
                     else:
                         st.caption("None on record.")
 
-                    st.markdown("**Directorships / Business Interests**")
+                    st.subheader("Directorships / Business Interests")
                     directorships = list(
                         db.query(
                             "SELECT * FROM sa_pa_directorships WHERE person_id = :pid",
@@ -518,7 +518,7 @@ with tab_profile:
                         st.caption("None on record.")
 
                 with col2:
-                    st.markdown("**Financial Interests**")
+                    st.subheader("Financial Interests")
                     financial = list(
                         db.query(
                             "SELECT * FROM sa_pa_financial WHERE person_id = :pid",
@@ -533,7 +533,7 @@ with tab_profile:
                     else:
                         st.caption("None on record.")
 
-                    st.markdown("**Cross-List Matches**")
+                    st.subheader("Cross-List Matches")
                     name_tokens = set((person.get("name") or "").upper().split())
                     all_matches = list(db.query("SELECT * FROM sa_cross_list_matches"))
                     relevant = [
@@ -546,7 +546,7 @@ with tab_profile:
                     else:
                         st.caption("No cross-list matches found.")
 
-                st.markdown("**Declared Financial Interests Over Time**")
+                st.subheader("Declared Financial Interests Over Time")
                 timeline = list(
                     db.query(
                         "SELECT * FROM sa_wealth_timeline WHERE person_id = :pid ORDER BY year",
