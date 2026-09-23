@@ -39,6 +39,10 @@ Mine water use licence compliance ratings for 2015-2018, sourced from the Depart
 
 Payments made to South African government entities by UK-listed companies with mining/petroleum projects, disclosed under UK payment transparency law (2018 reporting period). Sourced from Oxpeckers Investigative Environmental Journalism Centre via openAFRICA (#MineAlert). Licensed CC BY. Company names can be cross-referenced against mine ownership and IEC donor data.
 
+### DMR 2019 Operating Mines, Quarries & Works
+
+The National Department of Mineral Resources' official 2019 list of operating mines, quarries, and mineral processing works (1,897 entries) - broader in scope than the Feb 2026 Mendeley dataset (245 large-scale mines), including smaller operations, quarries (aggregate, dimension stone, clay/brick materials), and processing works. Older than the Mendeley data, so treat as a complementary historical reference rather than current status. Sourced from DMR via Oxpeckers/openAFRICA. Licensed CC BY.
+
 ## Known Gaps in Public Data
 
 Building this directory surfaced several structural gaps in what's publicly accessible about wealth, ownership, and licensing in South Africa. These aren't gaps in this repository's effort — they're genuine transparency gaps in the underlying systems, and documenting them is itself part of this project's purpose.
