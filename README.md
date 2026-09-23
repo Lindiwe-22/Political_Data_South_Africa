@@ -31,6 +31,19 @@ Information about all mines and their owners in RSA, which is part of the [direc
 
 Quarterly declarations of donations made to registered political parties, as required under the Political Party Funding Act 6 of 2018. Added to cross-reference political funders against mine ownership and MPs' declared business interests, since a donor also appearing as a mine owner or a politician's declared interest is a genuine accountability signal this directory is built to surface. Sourced from the [IEC's published declarations reports](https://results.elections.org.za/home/downloads/party-funding-reports), currently covering financial years 2022/2023 through 2026/2027.
 
+
+## Known Gaps in Public Data
+
+Building this directory surfaced several structural gaps in what's publicly accessible about wealth, ownership, and licensing in South Africa. These aren't gaps in this repository's effort — they're genuine transparency gaps in the underlying systems, and documenting them is itself part of this project's purpose.
+
+- **Company ownership (CIPC).** South Africa's Companies and Intellectual Property Commission exposes company data only via a paid, pay-per-lookup API, and its terms restrict redistribution of results. This is also why OpenCorporates' South African company data has been frozen since 2014. There is no free, bulk, redistributable source of who owns/directs which registered companies.
+- **NPO registry.** The Department of Social Development's public NPO search (formerly at npo.gov.za) has been replaced by a login-gated self-service portal for NPOs to manage their own registration. There is no public search or bulk data access; status/compliance enquiries are handled manually, one at a time, by email.
+- **Mining rights and licenses.** South Africa's mining cadastre (replacing the long-criticised SAMRAD system) is still in phased pilot rollout as of late 2025 (Western Cape only, ~37 rightholders registered), with a national rollout most recently targeted for March 2027 - a date that has slipped multiple times already. There is currently no public way to see who holds which mining/prospecting rights.
+- **Derelict and ownerless (D&O) mines.** An estimated 6,100 abandoned mines exist nationally (2,568 flagged high-risk by the Auditor-General), but the government's own D&O database has been publicly flagged by researchers and the Auditor-General for accuracy and transparency problems, and no public bulk dataset is available.
+
+If any of these systems open up public, redistributable data in the future, this directory is a natural place to incorporate it.
+
+
 ## Exploring the data
 
 Let's check out the people owning the largest number of mines in South Africa:
