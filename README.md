@@ -35,6 +35,9 @@ Quarterly declarations of donations made to registered political parties, as req
 
 Mine water use licence compliance ratings for 2015-2018, sourced from the Department of Water & Sanitation via Oxpeckers Investigative Environmental Journalism Centre's #MineAlert investigation. Licensed CC BY. Joined against mine ownership data to surface which mine owners had compliance issues.
 
+### UK Company Payments to SA Government
+
+Payments made to South African government entities by UK-listed companies with mining/petroleum projects, disclosed under UK payment transparency law (2018 reporting period). Sourced from Oxpeckers Investigative Environmental Journalism Centre via openAFRICA (#MineAlert). Licensed CC BY. Company names can be cross-referenced against mine ownership and IEC donor data.
 
 ## Known Gaps in Public Data
 
