@@ -31,10 +31,15 @@ Information about all mines and their owners in RSA, which is part of the [direc
 
 Quarterly declarations of donations made to registered political parties, as required under the Political Party Funding Act 6 of 2018. Added to cross-reference political funders against mine ownership and MPs' declared business interests, since a donor also appearing as a mine owner or a politician's declared interest is a genuine accountability signal this directory is built to surface. Sourced from the [IEC's published declarations reports](https://results.elections.org.za/home/downloads/party-funding-reports), currently covering financial years 2022/2023 through 2026/2027.
 
+### Water Compliance Violations
+
+Mine water use licence compliance ratings for 2015-2018, sourced from the Department of Water & Sanitation via Oxpeckers Investigative Environmental Journalism Centre's #MineAlert investigation. Licensed CC BY. Joined against mine ownership data to surface which mine owners had compliance issues.
+
 
 ## Known Gaps in Public Data
 
 Building this directory surfaced several structural gaps in what's publicly accessible about wealth, ownership, and licensing in South Africa. These aren't gaps in this repository's effort — they're genuine transparency gaps in the underlying systems, and documenting them is itself part of this project's purpose.
+
 
 - **Company ownership (CIPC).** South Africa's Companies and Intellectual Property Commission exposes company data only via a paid, pay-per-lookup API, and its terms restrict redistribution of results. This is also why OpenCorporates' South African company data has been frozen since 2014. There is no free, bulk, redistributable source of who owns/directs which registered companies.
 - **NPO registry.** The Department of Social Development's public NPO search (formerly at npo.gov.za) has been replaced by a login-gated self-service portal for NPOs to manage their own registration. There is no public search or bulk data access; status/compliance enquiries are handled manually, one at a time, by email.
