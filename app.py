@@ -179,16 +179,19 @@ with tab_people:
 
     if query:
         try:
+            words = query.split()
+            conditions = " AND ".join(f"name ILIKE :q{i}" for i in range(len(words)))
+            params = {f"q{i}": f"%{w}%" for i, w in enumerate(words)}
             results = list(
                 db.query(
-                    """
+                    f"""
                     SELECT *
                     FROM sa_pa_persons
-                    WHERE name ILIKE :q
+                    WHERE {conditions}
                     ORDER BY name
                     LIMIT 25
                     """,
-                    q=f"%{query}%",
+                    **params,
                 )
             )
 
@@ -467,10 +470,13 @@ with tab_profile:
 
     if query:
         try:
+            words = query.split()
+            conditions = " AND ".join(f"name ILIKE :q{i}" for i in range(len(words)))
+            params = {f"q{i}": f"%{w}%" for i, w in enumerate(words)}
             people = list(
                 db.query(
-                    "SELECT * FROM sa_pa_persons WHERE name ILIKE :q ORDER BY name LIMIT 10",
-                    q=f"%{query}%",
+                    f"SELECT * FROM sa_pa_persons WHERE {conditions} ORDER BY name LIMIT 10",
+                    **params,
                 )
             )
 
