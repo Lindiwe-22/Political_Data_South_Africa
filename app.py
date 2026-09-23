@@ -169,8 +169,8 @@ st.warning(
 # People
 # ---------------------------------------------------------------------------
 
-tab_people, tab_mines, tab_donations, tab_profile = st.tabs(
-    ["👤 People", "⛏️ Mines", "💰 Political Funding", "👤 Politician Profile"]
+tab_people, tab_mines, tab_donations, tab_profile, tab_uk_payments = st.tabs(
+    ["👤 People", "⛏️ Mines", "💰 Political Funding", "👤 Politician Profile", "🌍 UK Company Payments"]
 )
 
 
@@ -612,6 +612,88 @@ with tab_profile:
             st.caption(str(exc))
 
 
+
+
+# ---------------------------------------------------------------------------
+# UK Company Payments
+# ---------------------------------------------------------------------------
+
+with tab_uk_payments:
+    st.header("UK Company Payments")
+    st.markdown(
+        '<div class="section-description">'
+        "Payments made to South African government entities by UK-listed "
+        "companies with mining/petroleum projects, as disclosed under UK "
+        "payment transparency law (2018 reporting period)."
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    query = st.text_input(
+        "Search a company or project",
+        key="uk_payments_search",
+        placeholder="e.g. company name or project",
+        label_visibility="collapsed",
+    )
+
+    try:
+        if query:
+            results = list(
+                db.query(
+                    """
+                    SELECT * FROM sa_uk_payments
+                    WHERE reporting_company ILIKE :q
+                       OR project_name ILIKE :q
+                    ORDER BY total_project_payment_us DESC
+                    """,
+                    q=f"%{query}%",
+                )
+            )
+        else:
+            results = list(
+                db.query(
+                    "SELECT * FROM sa_uk_payments ORDER BY total_project_payment_us DESC"
+                )
+            )
+
+        st.markdown(
+            f'<div class="result-count">{len(results)} result(s)</div>',
+            unsafe_allow_html=True,
+        )
+
+        if not results:
+            st.info("No payments matched your search.")
+
+        for row in results:
+            company = row.get("reporting_company") or "Unknown company"
+            project = row.get("project_name") or "Unspecified project"
+            total = row.get("total_project_payment_us")
+
+            with st.expander(f"{company} — {project}"):
+                st.markdown(
+                    f"**Total payment:** "
+                    f"{'US${:,.2f}'.format(total) if total is not None else 'Not disclosed'}"
+                )
+                st.markdown(f"**Reporting period:** {row.get('reporting_period_year') or 'Not available'}")
+                st.markdown(f"**Province:** {row.get('project_location_province') or 'Not available'}")
+
+                tax = row.get('tax_payment_us')
+                royalties = row.get('royalties_payment_us')
+                infra = row.get('infrastructure_improvements_payment_us')
+                other = row.get('other_payment_us')
+
+                st.markdown("**Breakdown:**")
+                st.markdown(f"- Tax: {'US${:,.2f}'.format(tax) if tax is not None else 'None disclosed'}")
+                st.markdown(f"- Royalties: {'US${:,.2f}'.format(royalties) if royalties is not None else 'None disclosed'}")
+                st.markdown(f"- Infrastructure improvements: {'US${:,.2f}'.format(infra) if infra is not None else 'None disclosed'}")
+                st.markdown(f"- Other: {'US${:,.2f}'.format(other) if other is not None else 'None disclosed'}")
+
+                if row.get("data_points_on_minealert"):
+                    st.markdown(f"[View on #MineAlert]({row['data_points_on_minealert']})")
+
+    except Exception as exc:
+        st.error("The UK payments search could not be completed.")
+        st.caption(str(exc))
 
 
 # ---------------------------------------------------------------------------
