@@ -151,6 +151,19 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.warning(
+    "**Data scope:** This directory currently covers only sitting National "
+    "Assembly members (People's Assembly data), mine ownership records, and "
+    "IEC-declared political party donations for the quarters loaded so far. "
+    "It does NOT include provincial legislators, municipal councillors or "
+    "mayoral candidates, or party leadership roles outside Parliament "
+    "(for example, **Helen Zille**; DA Federal Council Chairperson and 2026 "
+    "Johannesburg mayoral candidate, will not appear, as she is not a "
+    "sitting MP). Absence from this directory does not mean a person has no "
+    "declared interests; it may simply mean they fall outside this "
+    "directory's current data sources."
+)
+
 
 # ---------------------------------------------------------------------------
 # People
