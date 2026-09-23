@@ -133,6 +133,27 @@ with st.sidebar:
         amounts, and donation type, as published by the IEC.
         """
     )
+
+    st.write(
+        """
+        **Politician Profile**
+
+        A consolidated view of one politician: memberships, directorships,
+        financial interests, declared-wealth trend over time, and any
+        cross-list matches against mine owners or political donors.
+        """
+    )
+
+    st.write(
+        """
+        **UK Company Payments**
+
+        Search payments made to South African government entities by
+        UK-listed mining/petroleum companies, as disclosed under UK
+        payment transparency law.
+        """
+    )
+
     st.divider()
 
     st.caption("SA Political & Mining Data Directory")
