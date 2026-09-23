@@ -540,6 +540,29 @@ with tab_profile:
                     else:
                         st.caption("No cross-list matches found.")
 
+                st.markdown("**Declared Financial Interests Over Time**")
+                timeline = list(
+                    db.query(
+                        "SELECT * FROM sa_wealth_timeline WHERE person_id = :pid ORDER BY year",
+                        pid=person["popit_id"],
+                    )
+                )
+                if timeline:
+                    import pandas as pd
+                    df = pd.DataFrame(timeline)
+                    df = df.set_index("year")[["total_declared_value"]]
+                    df.columns = ["Total Declared Value (R)"]
+                    st.line_chart(df)
+                    st.caption(
+                        "Shows confirmed total declared value only (per-share prices "
+                        "converted using declared share counts where available). "
+                        "Some years may show R0 where source disclosures used a format "
+                        "that could not be reliably converted to a total - see raw "
+                        "financial interests above for those years' entries."
+                    )
+                else:
+                    st.caption("No financial timeline data available.")
+
                 st.divider()
 
         except _SQLAlchemyError as exc:
