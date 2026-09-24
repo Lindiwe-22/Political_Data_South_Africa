@@ -121,8 +121,10 @@ with st.sidebar:
         """
         **Mines**
 
-        Search mining operations by mine name or owner and view available
-        ownership and operational information.
+        Search mining operations by mine name or owner. Shows current
+        ownership data plus, where available, additional results from
+        the DMR's broader 2019 mines/quarries/works dataset and water
+        compliance history.
         """
     )
     st.write(
@@ -425,6 +427,66 @@ with tab_mines:
             st.error(
                 "The mine search could not be completed."
             )
+            st.caption(str(exc))
+
+    if query:
+        try:
+            dmr_results = list(
+                db.query(
+                    """
+                    SELECT *
+                    FROM sa_dmr_2019_operations
+                    WHERE mine_name ILIKE :q
+                       OR mine_owner ILIKE :q
+                    ORDER BY mine_name
+                    LIMIT 25
+                    """,
+                    q=f"%{query}%",
+                )
+            )
+
+            if dmr_results:
+                st.markdown("---")
+                st.markdown(
+                    f'<div class="result-count">'
+                    f'{len(dmr_results)} additional result(s) from the DMR 2019 dataset'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
+                st.caption(
+                    "The results below come from the Department of Mineral "
+                    "Resources' 2019 operating mines/quarries/works list - a "
+                    "broader but older dataset than the current mine records "
+                    "above. Ownership may have changed since 2019."
+                )
+
+                for op in dmr_results:
+                    op_name = op.get("mine_name") or "Unnamed operation"
+
+                    with st.expander(f"{op_name} (DMR 2019)"):
+                        st.markdown(
+                            f"**Owner (as of 2019):** "
+                            f"{op.get('mine_owner') or 'Not available'}"
+                        )
+                        st.markdown(
+                            f"**Category:** "
+                            f"{op.get('operation_category') or 'Not available'}"
+                        )
+                        st.markdown(
+                            f"**Method:** "
+                            f"{op.get('operation_method') or 'Not available'}"
+                        )
+                        st.markdown(
+                            f"**Commodity:** "
+                            f"{op.get('commodity') or 'Not available'}"
+                        )
+                        st.markdown(
+                            f"**District/Province:** "
+                            f"{op.get('magisterial_district_province') or 'Not available'}"
+                        )
+
+        except _SQLAlchemyError as exc:
+            st.error("The DMR 2019 search could not be completed.")
             st.caption(str(exc))
 
 # ---------------------------------------------------------------------------
